@@ -88,8 +88,35 @@ elseif(APPLE)
         IMPORTED_LOCATION "${RAYLIB_LIBRARY}"
         INTERFACE_INCLUDE_DIRECTORIES "${RAYLIB_INCLUDE_DIR}"
     )
+elseif(UNIX)
+    find_package(PkgConfig QUIET)
+
+    if(PkgConfig_FOUND)
+        pkg_check_modules(RAYLIB_PC QUIET IMPORTED_TARGET raylib)
+    endif()
+
+    if(RAYLIB_PC_FOUND)
+        add_library(raylib INTERFACE IMPORTED GLOBAL)
+        target_link_libraries(raylib INTERFACE PkgConfig::RAYLIB_PC)
+    else()
+        find_path(RAYLIB_INCLUDE_DIR raylib.h)
+        find_library(RAYLIB_LIBRARY NAMES raylib libraylib)
+
+        if(NOT RAYLIB_INCLUDE_DIR OR NOT RAYLIB_LIBRARY)
+            message(FATAL_ERROR
+                "Linux raylib development files were not found. "
+                "On Ubuntu/Debian install them with: sudo apt install libraylib-dev"
+            )
+        endif()
+
+        add_library(raylib UNKNOWN IMPORTED GLOBAL)
+        set_target_properties(raylib PROPERTIES
+            IMPORTED_LOCATION "${RAYLIB_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${RAYLIB_INCLUDE_DIR}"
+        )
+    endif()
 else()
-    message(FATAL_ERROR "This template currently supports Windows and macOS only.")
+    message(FATAL_ERROR "This template currently supports Windows, macOS, and Linux only.")
 endif()
 
 add_executable(RaylibTemplate "main.cpp")

@@ -1,232 +1,148 @@
 #include <raylib.h>
 
-static constexpr int window_width = 900;
-static constexpr int window_height = 900;
-static constexpr int board_size = 3;
-static constexpr int cell_size = window_width / board_size;
-static constexpr int piece_padding = 54;
+static constexpr int window_width = 960;
+static constexpr int window_height = 540;
 
-enum class GameResult
+static constexpr float paddle_width = 20.0f;
+static constexpr float paddle_height = 100.0f;
+static constexpr float paddle_speed = 420.0f;
+static constexpr float ball_radius = 10.0f;
+static constexpr float ball_speed = 360.0f;
+
+void reset_ball(Vector2& ball_position, Vector2& ball_velocity, float direction)
 {
-    Playing,
-    XWins,
-    OWins,
-    Draw
-};
+    ball_position = Vector2{
+        window_width / 2.0f,
+        window_height / 2.0f,
+    };
 
-void reset_board(char board[board_size][board_size])
-{
-    for (int row = 0; row < board_size; ++row)
-    {
-        for (int column = 0; column < board_size; ++column)
-        {
-            board[row][column] = ' ';
-        }
-    }
-}
-
-bool is_board_full(const char board[board_size][board_size])
-{
-    for (int row = 0; row < board_size; ++row)
-    {
-        for (int column = 0; column < board_size; ++column)
-        {
-            if (board[row][column] == ' ')
-            {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
-GameResult check_game_result(const char board[board_size][board_size])
-{
-    for (int row = 0; row < board_size; ++row)
-    {
-        if (board[row][0] != ' ' &&
-            board[row][0] == board[row][1] &&
-            board[row][1] == board[row][2])
-        {
-            return board[row][0] == 'X' ? GameResult::XWins : GameResult::OWins;
-        }
-    }
-
-    for (int column = 0; column < board_size; ++column)
-    {
-        if (board[0][column] != ' ' &&
-            board[0][column] == board[1][column] &&
-            board[1][column] == board[2][column])
-        {
-            return board[0][column] == 'X' ? GameResult::XWins : GameResult::OWins;
-        }
-    }
-
-    if (board[0][0] != ' ' &&
-        board[0][0] == board[1][1] &&
-        board[1][1] == board[2][2])
-    {
-        return board[0][0] == 'X' ? GameResult::XWins : GameResult::OWins;
-    }
-
-    if (board[0][2] != ' ' &&
-        board[0][2] == board[1][1] &&
-        board[1][1] == board[2][0])
-    {
-        return board[0][2] == 'X' ? GameResult::XWins : GameResult::OWins;
-    }
-
-    if (is_board_full(board))
-    {
-        return GameResult::Draw;
-    }
-
-    return GameResult::Playing;
-}
-
-bool try_get_clicked_cell(Vector2 mouse_position, int& row, int& column)
-{
-    if (mouse_position.x < 0.0f ||
-        mouse_position.x >= static_cast<float>(window_width) ||
-        mouse_position.y < 0.0f ||
-        mouse_position.y >= static_cast<float>(window_height))
-    {
-        return false;
-    }
-
-    column = static_cast<int>(mouse_position.x) / cell_size;
-    row = static_cast<int>(mouse_position.y) / cell_size;
-    return true;
-}
-
-void draw_grid()
-{
-    for (int index = 1; index < board_size; ++index)
-    {
-        const int position = index * cell_size;
-
-        DrawLine(position, 0, position, window_height, BLACK);
-        DrawLine(0, position, window_width, position, BLACK);
-    }
-}
-
-void draw_piece_x(int row, int column)
-{
-    const int left = column * cell_size + piece_padding;
-    const int top = row * cell_size + piece_padding;
-    const int right = (column + 1) * cell_size - piece_padding;
-    const int bottom = (row + 1) * cell_size - piece_padding;
-
-    DrawLine(left, top, right, bottom, BLACK);
-    DrawLine(right, top, left, bottom, BLACK);
-}
-
-void draw_piece_o(int row, int column)
-{
-    const int center_x = column * cell_size + cell_size / 2;
-    const int center_y = row * cell_size + cell_size / 2;
-    const float radius = static_cast<float>(cell_size / 2 - piece_padding);
-
-    DrawCircleLines(center_x, center_y, radius, BLACK);
-}
-
-void draw_board(const char board[board_size][board_size])
-{
-    draw_grid();
-
-    for (int row = 0; row < board_size; ++row)
-    {
-        for (int column = 0; column < board_size; ++column)
-        {
-            if (board[row][column] == 'X')
-            {
-                draw_piece_x(row, column);
-            }
-            else if (board[row][column] == 'O')
-            {
-                draw_piece_o(row, column);
-            }
-        }
-    }
-}
-
-void draw_turn_text(char current_player)
-{
-    const char* turn_text = current_player == 'X' ? "Turn: X" : "Turn: O";
-    DrawText(turn_text, 12, 12, 24, BLACK);
-}
-
-void draw_popup(GameResult game_result)
-{
-    DrawRectangle(250, 330, 400, 160, RAYWHITE);
-    DrawRectangleLines(250, 330, 400, 160, BLACK);
-
-    if (game_result == GameResult::XWins)
-    {
-        DrawText("X Wins!", 330, 370, 50, BLACK);
-    }
-    else if (game_result == GameResult::OWins)
-    {
-        DrawText("O Wins!", 330, 370, 50, BLACK);
-    }
-    else
-    {
-        DrawText("Draw!", 350, 370, 50, BLACK);
-    }
-
-    DrawText("Click to restart", 305, 430, 26, BLACK);
+    ball_velocity = Vector2{
+        ball_speed * direction,
+        ball_speed * 0.35f,
+    };
 }
 
 int main()
 {
-    char board[board_size][board_size];
-    char current_player = 'X';
-    GameResult game_result = GameResult::Playing;
-
-    reset_board(board);
-
-    InitWindow(window_width, window_height, "Tic Tac Toe Easy");
+    InitWindow(window_width, window_height, "Simple Pong");
     SetTargetFPS(60);
+
+    Rectangle left_paddle{
+        40.0f,
+        window_height / 2.0f - paddle_height / 2.0f,
+        paddle_width,
+        paddle_height,
+    };
+
+    Rectangle right_paddle{
+        window_width - 40.0f - paddle_width,
+        window_height / 2.0f - paddle_height / 2.0f,
+        paddle_width,
+        paddle_height,
+    };
+
+    Vector2 ball_position{};
+    Vector2 ball_velocity{};
+    reset_ball(ball_position, ball_velocity, 1.0f);
+
+    int left_score = 0;
+    int right_score = 0;
 
     while (!WindowShouldClose())
     {
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        const float delta_time = GetFrameTime();
+
+        // input
+        if (IsKeyDown(KEY_W))
         {
-            if (game_result == GameResult::Playing)
-            {
-                const Vector2 mouse_position = GetMousePosition();
-                int row = 0;
-                int column = 0;
-
-                if (try_get_clicked_cell(mouse_position, row, column) && board[row][column] == ' ')
-                {
-                    board[row][column] = current_player;
-                    game_result = check_game_result(board);
-
-                    if (game_result == GameResult::Playing)
-                    {
-                        current_player = current_player == 'X' ? 'O' : 'X';
-                    }
-                }
-            }
-            else
-            {
-                reset_board(board);
-                current_player = 'X';
-                game_result = GameResult::Playing;
-            }
+            left_paddle.y -= paddle_speed * delta_time;
+        }
+        if (IsKeyDown(KEY_S))
+        {
+            left_paddle.y += paddle_speed * delta_time;
+        }
+        if (IsKeyDown(KEY_UP))
+        {
+            right_paddle.y -= paddle_speed * delta_time;
+        }
+        if (IsKeyDown(KEY_DOWN))
+        {
+            right_paddle.y += paddle_speed * delta_time;
         }
 
+        // update
+        if (left_paddle.y < 0.0f)
+        {
+            left_paddle.y = 0.0f;
+        }
+        if (left_paddle.y > window_height - left_paddle.height)
+        {
+            left_paddle.y = window_height - left_paddle.height;
+        }
+        if (right_paddle.y < 0.0f)
+        {
+            right_paddle.y = 0.0f;
+        }
+        if (right_paddle.y > window_height - right_paddle.height)
+        {
+            right_paddle.y = window_height - right_paddle.height;
+        }
+
+        ball_position.x += ball_velocity.x * delta_time;
+        ball_position.y += ball_velocity.y * delta_time;
+
+        if (ball_position.y - ball_radius <= 0.0f ||
+            ball_position.y + ball_radius >= window_height)
+        {
+            ball_velocity.y *= -1.0f;
+        }
+
+        if (CheckCollisionCircleRec(ball_position, ball_radius, left_paddle) &&
+            ball_velocity.x < 0.0f)
+        {
+            ball_position.x = left_paddle.x + left_paddle.width + ball_radius;
+            ball_velocity.x *= -1.0f;
+        }
+
+        if (CheckCollisionCircleRec(ball_position, ball_radius, right_paddle) &&
+            ball_velocity.x > 0.0f)
+        {
+            ball_position.x = right_paddle.x - ball_radius;
+            ball_velocity.x *= -1.0f;
+        }
+
+        if (ball_position.x < -ball_radius)
+        {
+            ++right_score;
+            reset_ball(ball_position, ball_velocity, 1.0f);
+        }
+        else if (ball_position.x > window_width + ball_radius)
+        {
+            ++left_score;
+            reset_ball(ball_position, ball_velocity, -1.0f);
+        }
+
+        // render
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        draw_board(board);
-        draw_turn_text(current_player);
+        ClearBackground(Color{24, 28, 36, 255});
 
-        if (game_result != GameResult::Playing)
-        {
-            draw_popup(game_result);
-        }
+        DrawRectangle(
+            static_cast<int>(left_paddle.x),
+            static_cast<int>(left_paddle.y),
+            static_cast<int>(left_paddle.width),
+            static_cast<int>(left_paddle.height),
+            RAYWHITE);
+        DrawRectangle(
+            static_cast<int>(right_paddle.x),
+            static_cast<int>(right_paddle.y),
+            static_cast<int>(right_paddle.width),
+            static_cast<int>(right_paddle.height),
+            RAYWHITE);
+        DrawCircleV(ball_position, ball_radius, RAYWHITE);
+        DrawLine(window_width / 2, 0, window_width / 2, window_height, GRAY);
+
+        DrawText(TextFormat("%d", left_score), window_width / 2 - 80, 30, 40, RAYWHITE);
+        DrawText(TextFormat("%d", right_score), window_width / 2 + 55, 30, 40, RAYWHITE);
 
         EndDrawing();
     }
