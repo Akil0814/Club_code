@@ -16,7 +16,7 @@ int main()
         const Vector2 mouse_position = GetMousePosition();
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            std::cout << "Mouse left button pressed at ("<< mouse_position.x << ", "<< mouse_position.y << ")\n";
+            std::cout << "Mouse clicked, button pressed at ("<< mouse_position.x << ", "<< mouse_position.y << ")\n";
 
         BeginDrawing();
 

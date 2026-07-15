@@ -97,11 +97,6 @@ cmake --build build
 
 CMake first tries `pkg-config` to find raylib. If that is not available, it falls back to the standard system include and library paths. If your distribution does not provide `libraylib-dev`, install raylib using that distribution's package instructions.
 
-## What should happen?
-
-When the program starts, you should see a raylib window with a line, a circle, a rectangle. The circle follows the mouse, and clicking the left mouse button prints the mouse position to the terminal.
-
-
 ## resource
 
 https://github.com/raysan5/raylib

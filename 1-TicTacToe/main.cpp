@@ -4,7 +4,6 @@ static constexpr int window_width = 900;
 static constexpr int window_height = 900;
 static constexpr int board_size = 3;
 static constexpr int cell_size = window_width / board_size;
-static constexpr int piece_padding = 54;
 
 enum class GameResult
 {
@@ -113,10 +112,10 @@ void draw_grid()
 
 void draw_piece_x(int row, int column)
 {
-    const int left = column * cell_size + piece_padding;
-    const int top = row * cell_size + piece_padding;
-    const int right = (column + 1) * cell_size - piece_padding;
-    const int bottom = (row + 1) * cell_size - piece_padding;
+    const int left = column * cell_size;
+    const int top = row * cell_size;
+    const int right = (column + 1) * cell_size;
+    const int bottom = (row + 1) * cell_size;
 
     DrawLine(left, top, right, bottom, BLACK);
     DrawLine(right, top, left, bottom, BLACK);
@@ -126,7 +125,7 @@ void draw_piece_o(int row, int column)
 {
     const int center_x = column * cell_size + cell_size / 2;
     const int center_y = row * cell_size + cell_size / 2;
-    const float radius = static_cast<float>(cell_size / 2 - piece_padding);
+    const float radius = static_cast<float>(cell_size / 2 );
 
     DrawCircleLines(center_x, center_y, radius, BLACK);
 }
