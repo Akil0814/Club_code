@@ -79,9 +79,13 @@ else()
     message(FATAL_ERROR "This project supports Windows, macOS, and Linux only.")
 endif()
 
-# Change this one path to reference/02.cpp, reference/03.cpp, or reference/04.cpp
-# when presenting a later stage.
-add_executable(MiniSurvivors "reference/04.cpp")
+
+#add_executable(MiniSurvivors "reference/01.cpp")
+#add_executable(MiniSurvivors "reference/02.cpp")
+#add_executable(MiniSurvivors "reference/03.cpp")
+#add_executable(MiniSurvivors "reference/04.cpp")
+add_executable(MiniSurvivors "main.cpp")
+
 target_link_libraries(MiniSurvivors PRIVATE raylib)
 
 add_custom_command(TARGET MiniSurvivors POST_BUILD
