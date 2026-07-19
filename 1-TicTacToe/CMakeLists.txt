@@ -119,6 +119,11 @@ else()
     message(FATAL_ERROR "This template currently supports Windows, macOS, and Linux only.")
 endif()
 
+
+#add_executable(RaylibTemplate "reference/01.cpp")
+#add_executable(RaylibTemplate "reference/02.cpp")
+#add_executable(RaylibTemplate "reference/03.cpp")
+#add_executable(RaylibTemplate "reference/04.cpp")
 add_executable(RaylibTemplate "main.cpp")
 
 target_link_libraries(RaylibTemplate PRIVATE raylib)
