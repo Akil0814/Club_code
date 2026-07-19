@@ -2,25 +2,23 @@
 
 static constexpr int window_width = 900;
 static constexpr int window_height = 900;
-static constexpr int board_size = 3;
-static constexpr int cell_size = 300;
 
-void reset_board(char board[board_size][board_size])
+void reset_board(char board[3][3])
 {
-    for (int row = 0; row < board_size; ++row)
+    for (int row = 0; row < 3; ++row)
     {
-        for (int column = 0; column < board_size; ++column)
+        for (int column = 0; column < 3; ++column)
         {
             board[row][column] = ' ';
         }
     }
 }
 
-bool is_board_full(const char board[board_size][board_size])
+bool is_board_full(const char board[3][3])
 {
-    for (int row = 0; row < board_size; ++row)
+    for (int row = 0; row <3; ++row)
     {
-        for (int column = 0; column < board_size; ++column)
+        for (int column = 0; column <3; ++column)
         {
             if (board[row][column] == ' ') return false;
         }
@@ -29,51 +27,58 @@ bool is_board_full(const char board[board_size][board_size])
     return true;
 }
 
-bool check_win(const char board[board_size][board_size], char player)
+bool check_win(const char board[3][3], char player)
 {
-    if (board[0][0] == player && board[0][1] == player && board[0][2] == player) return true;
-    if (board[1][0] == player && board[1][1] == player && board[1][2] == player) return true;
-    if (board[2][0] == player && board[2][1] == player && board[2][2] == player) return true;
+    if (board[0][0] == player && board[0][1] == player && board[0][2] == player)
+        return true;
+    if (board[1][0] == player && board[1][1] == player && board[1][2] == player)
+        return true;
+    if (board[2][0] == player && board[2][1] == player && board[2][2] == player)
+        return true;
 
-    if (board[0][0] == player && board[1][0] == player && board[2][0] == player) return true;
-    if (board[0][1] == player && board[1][1] == player && board[2][1] == player) return true;
-    if (board[0][2] == player && board[1][2] == player && board[2][2] == player) return true;
+    if (board[0][0] == player && board[1][0] == player && board[2][0] == player)
+        return true;
+    if (board[0][1] == player && board[1][1] == player && board[2][1] == player)
+        return true;
+    if (board[0][2] == player && board[1][2] == player && board[2][2] == player)
+        return true;
 
-    if (board[0][0] == player && board[1][1] == player && board[2][2] == player) return true;
-    if (board[0][2] == player && board[1][1] == player && board[2][0] == player) return true;
+    if (board[0][0] == player && board[1][1] == player && board[2][2] == player)
+        return true;
+    if (board[0][2] == player && board[1][1] == player && board[2][0] == player)
+        return true;
 
     return false;
 }
 
-void draw_board(const char board[board_size][board_size])
+void draw_board(const char board[3][3])
 {
     // Draw the grid.
-    for (int index = 1; index < board_size; ++index)
+    for (int index = 1; index < 3; ++index)
     {
-        const int position = index * cell_size;
+        const int position = index * 300;
         DrawLine(position, 0, position, window_height, BLACK);
         DrawLine(0, position, window_width, position, BLACK);
     }
 
     // Draw every piece while visiting its cell.
-    for (int row = 0; row < board_size; ++row)
+    for (int row = 0; row < 3; ++row)
     {
-        for (int column = 0; column < board_size; ++column)
+        for (int column = 0; column < 3; ++column)
         {
-            const int left = column * cell_size;
-            const int top = row * cell_size;
-            const int right = left + cell_size;
-            const int bottom = top + cell_size;
+            const int left = column * 300;
+            const int top = row * 300;
+            const int right = left + 300;
+            const int bottom = top + 300;
 
             if (board[row][column] == 'X')
             {
-                DrawLine(left + 50, top + 50, right - 50, bottom - 50, BLACK);
-                DrawLine(right - 50, top + 50, left + 50, bottom - 50, BLACK);
+                DrawLine(left, top, right, bottom, BLACK);
+                DrawLine(right, top, left, bottom, BLACK);
             }
             else if (board[row][column] == 'O')
             {
-                DrawCircleLines(left + cell_size / 2, top + cell_size / 2,
-                    cell_size / 2.0f - 50.0f, BLACK);
+                DrawCircleLines(left + 300/ 2, top + 300 / 2,300 / 2, BLACK);
             }
         }
     }
@@ -81,7 +86,7 @@ void draw_board(const char board[board_size][board_size])
 
 int main()
 {
-    char board[board_size][board_size];
+    char board[3][3];
     char current_player = 'X';
     char winner = ' ';
 
@@ -106,11 +111,10 @@ int main()
                 const int mouse_x = GetMouseX();
                 const int mouse_y = GetMouseY();
 
-                if (mouse_x >= 0 && mouse_x < window_width &&
-                    mouse_y >= 0 && mouse_y < window_height)
+                if (mouse_x >= 0 && mouse_x < window_width &&mouse_y >= 0 && mouse_y < window_height)
                 {
-                    const int column = mouse_x / cell_size;
-                    const int row = mouse_y / cell_size;
+                    const int column = mouse_x / 300;
+                    const int row = mouse_y / 300;
 
                     if (board[row][column] == ' ')
                     {
