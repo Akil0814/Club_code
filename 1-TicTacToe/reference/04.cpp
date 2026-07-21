@@ -48,8 +48,8 @@ void draw_board(const char board[3][3])
     for (int index = 1; index < 3; ++index)
     {
         const int position = index * 300;
-        DrawLine(position, 0, position, 900, BLACK);
-        DrawLine(0, position, 900, position, BLACK);
+        DrawLine(position, 0, position, window_width, BLACK);
+        DrawLine(0, position, window_height, position, BLACK);
     }
 
     for (int row = 0; row < 3; ++row)
@@ -82,7 +82,7 @@ int main()
     char winner = ' ';
     reset_board(board);
 
-    InitWindow(900, 900, "Tic Tac Toe - 04 Complete");
+    InitWindow(window_width, window_height, "Tic Tac Toe");
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
@@ -101,8 +101,8 @@ int main()
                 const int mouse_x = GetMouseX();
                 const int mouse_y = GetMouseY();
 
-                if (mouse_x >= 0 && mouse_x < 900 &&
-                    mouse_y >= 0 && mouse_y < 900)
+                if (mouse_x >= 0 && mouse_x < window_width &&
+                    mouse_y >= 0 && mouse_y < window_height)
                 {
                     const int column = mouse_x / 300;
                     const int row = mouse_y / 300;
