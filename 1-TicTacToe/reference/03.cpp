@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <iostream>
 
 const int window_width = 900;
 const int window_height = 900;
@@ -30,16 +31,24 @@ bool is_board_full(const char board[3][3])
 
 bool check_win(const char board[3][3], char player)
 {
-    if (board[0][0] == player && board[0][1] == player && board[0][2] == player) return true;
-    if (board[1][0] == player && board[1][1] == player && board[1][2] == player) return true;
-    if (board[2][0] == player && board[2][1] == player && board[2][2] == player) return true;
+    if (board[0][0] == player && board[0][1] == player && board[0][2] == player)
+        return true;
+    if (board[1][0] == player && board[1][1] == player && board[1][2] == player)
+        return true;
+    if (board[2][0] == player && board[2][1] == player && board[2][2] == player)
+        return true;
 
-    if (board[0][0] == player && board[1][0] == player && board[2][0] == player) return true;
-    if (board[0][1] == player && board[1][1] == player && board[2][1] == player) return true;
-    if (board[0][2] == player && board[1][2] == player && board[2][2] == player) return true;
+    if (board[0][0] == player && board[1][0] == player && board[2][0] == player)
+        return true;
+    if (board[0][1] == player && board[1][1] == player && board[2][1] == player)
+        return true;
+    if (board[0][2] == player && board[1][2] == player && board[2][2] == player)
+        return true;
 
-    if (board[0][0] == player && board[1][1] == player && board[2][2] == player) return true;
-    if (board[0][2] == player && board[1][1] == player && board[2][0] == player) return true;
+    if (board[0][0] == player && board[1][1] == player && board[2][2] == player)
+        return true;
+    if (board[0][2] == player && board[1][1] == player && board[2][0] == player)
+        return true;
 
     return false;
 }
@@ -64,13 +73,12 @@ void draw_board(const char board[3][3])
 
             if (board[row][column] == 'X')
             {
-                DrawLine(left + 40, top + 40, right - 40, bottom - 40, BLACK);
-                DrawLine(right - 40, top + 40, left + 40, bottom - 40, BLACK);
+                DrawLine(left, top, right, bottom, BLACK);
+                DrawLine(right, top, left, bottom, BLACK);
             }
             else if (board[row][column] == 'O')
             {
-                DrawCircleLines(left + 300 / 2, top + 300 / 2,
-                    300 / 2.0f - 40.0f, BLACK);
+                DrawCircleLines(left + 300 / 2, top + 300 / 2, 300 / 2.0f, BLACK);
             }
         }
     }
@@ -81,16 +89,18 @@ int main()
     char board[3][3];
     char current_player = 'X';
     char winner = '-';
-    reset_board(board);
 
     InitWindow(window_width, window_height, "Tic Tac Toe");
     SetTargetFPS(60);
+
+    reset_board(board);
 
     while (!WindowShouldClose())
     {
         // input
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
+
             if (winner != '-')
             {
                 reset_board(board);
@@ -99,11 +109,11 @@ int main()
             }
             else
             {
+
                 const int mouse_x = GetMouseX();
                 const int mouse_y = GetMouseY();
 
-                if (mouse_x >= 0 && mouse_x < window_width 
-                    &&mouse_y >= 0 && mouse_y < window_height)
+                if (mouse_x >= 0 && mouse_x < window_width && mouse_y >= 0 && mouse_y < window_height)
                 {
                     const int column = mouse_x / 300;
                     const int row = mouse_y / 300;
@@ -113,38 +123,30 @@ int main()
                         board[row][column] = current_player;
 
                         if (check_win(board, current_player))
-                        {
                             winner = current_player;
-                        }
+
                         else if (is_board_full(board))
-                        {
                             winner = 'D';
-                        }
+
                         else
-                        {
                             current_player = current_player == 'X' ? 'O' : 'X';
-                        }
                     }
                 }
             }
         }
 
-        // render
         BeginDrawing();
         ClearBackground(RAYWHITE);
         draw_board(board);
 
-        if (winner == '-')
-        {
-            DrawText(TextFormat("Turn: %c", current_player), 20, 20, 24, BLACK);
-        }
-        else
-        {
-            DrawRectangle(250, 330, 400, 160, RAYWHITE);
-            DrawRectangleLines(250, 330, 400, 160, BLACK);
+        DrawText(TextFormat("Turn: %c", current_player), 20, 20, 24, BLACK);
 
-            if (winner == 'D') DrawText("Draw!", 350, 370, 50, BLACK);
-            else DrawText(TextFormat("%c Wins!", winner), 330, 370, 50, BLACK);
+        if (winner != '-')
+        {
+            if (winner == 'D')
+                DrawText("Draw!", 350, 370, 50, BLACK);
+            else
+                DrawText(TextFormat("%c Wins!", winner), 330, 370, 50, BLACK);
 
             DrawText("Click to restart", 305, 430, 26, BLACK);
         }
@@ -153,5 +155,6 @@ int main()
     }
 
     CloseWindow();
+
     return 0;
 }
