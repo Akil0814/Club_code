@@ -64,12 +64,13 @@ void draw_board(const char board[3][3])
 
             if (board[row][column] == 'X')
             {
-                DrawLine(left, top, right, bottom, BLACK);
-                DrawLine(right, top, left, bottom, BLACK);
+                DrawLine(left + 40, top + 40, right - 40, bottom - 40, BLACK);
+                DrawLine(right - 40, top + 40, left + 40, bottom - 40, BLACK);
             }
             else if (board[row][column] == 'O')
             {
-                DrawCircleLines(left + 300 / 2, top + 300 / 2, 300 / 2.0f, BLACK);
+                DrawCircleLines(left + 300 / 2, top + 300 / 2,
+                    300 / 2.0f - 40.0f, BLACK);
             }
         }
     }
@@ -139,6 +140,9 @@ int main()
         }
         else
         {
+            DrawRectangle(250, 330, 400, 160, RAYWHITE);
+            DrawRectangleLines(250, 330, 400, 160, BLACK);
+
             if (winner == 'D') DrawText("Draw!", 350, 370, 50, BLACK);
             else DrawText(TextFormat("%c Wins!", winner), 330, 370, 50, BLACK);
 

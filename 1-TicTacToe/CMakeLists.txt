@@ -124,7 +124,8 @@ endif()
 #add_executable(RaylibTemplate "reference/02.cpp")
 #add_executable(RaylibTemplate "reference/03.cpp")
 #add_executable(RaylibTemplate "reference/04.cpp")
-add_executable(RaylibTemplate "main.cpp")
+add_executable(RaylibTemplate "reference/05.cpp")
+#add_executable(RaylibTemplate "main.cpp")
 
 target_link_libraries(RaylibTemplate PRIVATE raylib)
 

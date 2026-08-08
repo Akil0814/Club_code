@@ -1,5 +1,4 @@
 #include <raylib.h>
-#include <iostream>
 
 const int window_width = 900;
 const int window_height = 900;
@@ -47,47 +46,27 @@ bool check_win(const char board[3][3], char player)
 
 void draw_board(const char board[3][3])
 {
-    for (int index = 1; index < 3; ++index)
-    {
-        const int position = index * 300;
-        DrawLine(position, 0, position, window_width, BLACK);
-        DrawLine(0, position, window_height, position, BLACK);
-    }
-
-    //...
 }
-
 
 int main()
 {
     char board[3][3];
     char current_player = 'X';
     char winner = '-';
+    reset_board(board);
 
     InitWindow(window_width, window_height, "Tic Tac Toe");
     SetTargetFPS(60);
 
-    reset_board(board);
-
-    while(!WindowShouldClose())
+    while (!WindowShouldClose())
     {
-        //input
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            std::cout<<"button down"<<std::endl;
-        }
-
-
+        // render
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
         draw_board(board);
-
-
         EndDrawing();
     }
 
     CloseWindow();
-
     return 0;
 }
