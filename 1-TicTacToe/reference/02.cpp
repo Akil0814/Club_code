@@ -82,6 +82,10 @@ int main()
     char winner = '-';
     reset_board(board);
 
+    //testing draw_board funtion
+    board[0][0] = 'X';
+    board[1][1] = 'O';
+
     InitWindow(window_width, window_height, "Tic Tac Toe");
     SetTargetFPS(60);
 
