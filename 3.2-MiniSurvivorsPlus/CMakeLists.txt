@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(MiniSurvivors LANGUAGES C CXX)
+project(MiniSurvivorsPlus LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -80,24 +80,29 @@ else()
 endif()
 
 
-#add_executable(MiniSurvivors "reference/01.cpp")
-#add_executable(MiniSurvivors "reference/02.cpp")
-#add_executable(MiniSurvivors "reference/03.cpp")
-#add_executable(MiniSurvivors "reference/04.cpp")
-add_executable(MiniSurvivors "main.cpp")
+add_executable(MiniSurvivorsPlus
+    "main.cpp"
+    "src/animation.cpp"
+    "src/bullet.cpp"
+    "src/enemy.cpp"
+    "src/enemy_factory.cpp"
+    "src/math_utils.cpp"
+    "src/player.cpp"
+)
 
-target_link_libraries(MiniSurvivors PRIVATE raylib)
+target_include_directories(MiniSurvivorsPlus PRIVATE "src")
+target_link_libraries(MiniSurvivorsPlus PRIVATE raylib)
 
-add_custom_command(TARGET MiniSurvivors POST_BUILD
+add_custom_command(TARGET MiniSurvivorsPlus POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/res"
-        "$<TARGET_FILE_DIR:MiniSurvivors>/res"
+        "$<TARGET_FILE_DIR:MiniSurvivorsPlus>/res"
 )
 
 if(WIN32)
-    add_custom_command(TARGET MiniSurvivors POST_BUILD
+    add_custom_command(TARGET MiniSurvivorsPlus POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E copy_if_different
             "${RAYLIB_RUNTIME_FILE}"
-            "$<TARGET_FILE_DIR:MiniSurvivors>"
+            "$<TARGET_FILE_DIR:MiniSurvivorsPlus>"
     )
 endif()
