@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(MiniSurvivors LANGUAGES C CXX)
+project(MiniSurvivorsPro LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -80,24 +80,32 @@ else()
 endif()
 
 
-#add_executable(MiniSurvivors "reference/01.cpp")
-#add_executable(MiniSurvivors "reference/02.cpp")
-#add_executable(MiniSurvivors "reference/03.cpp")
-#add_executable(MiniSurvivors "reference/04.cpp")
-add_executable(MiniSurvivors "main.cpp")
+add_executable(MiniSurvivorsPro
+    "main.cpp"
+    "src/animation.h"
+    "src/bullet.h"
+    "src/enemy.h"
+    "src/enemy_ai.h"
+    "src/enemy_factory.h"
+    "src/enemy_type.h"
+    "src/game_config.h"
+    "src/math_utils.h"
+    "src/player.h"
+)
 
-target_link_libraries(MiniSurvivors PRIVATE raylib)
+target_include_directories(MiniSurvivorsPro PRIVATE "src")
+target_link_libraries(MiniSurvivorsPro PRIVATE raylib)
 
-add_custom_command(TARGET MiniSurvivors POST_BUILD
+add_custom_command(TARGET MiniSurvivorsPro POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/res"
-        "$<TARGET_FILE_DIR:MiniSurvivors>/res"
+        "$<TARGET_FILE_DIR:MiniSurvivorsPro>/res"
 )
 
 if(WIN32)
-    add_custom_command(TARGET MiniSurvivors POST_BUILD
+    add_custom_command(TARGET MiniSurvivorsPro POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E copy_if_different
             "${RAYLIB_RUNTIME_FILE}"
-            "$<TARGET_FILE_DIR:MiniSurvivors>"
+            "$<TARGET_FILE_DIR:MiniSurvivorsPro>"
     )
 endif()
