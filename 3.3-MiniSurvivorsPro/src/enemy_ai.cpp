@@ -15,7 +15,7 @@ KeepDistanceAI::KeepDistanceAI(float preferred_distance) : _preferred_distance(p
 
 Vector2 KeepDistanceAI::movement_direction(Vector2 enemy_position, Vector2 player_position) const
 {
-    constexpr float distance_tolerance = 10.0f;
+    constexpr float distance_tolerance = 25.0f;
     const float distance = distance_between(enemy_position, player_position);
     const Vector2 direction = direction_to(enemy_position, player_position);
 
