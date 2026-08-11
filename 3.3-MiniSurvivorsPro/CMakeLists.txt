@@ -82,14 +82,21 @@ endif()
 
 add_executable(MiniSurvivorsPro
     "main.cpp"
+    "src/animation.cpp"
     "src/animation.h"
+    "src/bullet.cpp"
     "src/bullet.h"
+    "src/enemy.cpp"
     "src/enemy.h"
+    "src/enemy_ai.cpp"
     "src/enemy_ai.h"
+    "src/enemy_factory.cpp"
     "src/enemy_factory.h"
     "src/enemy_type.h"
     "src/game_config.h"
+    "src/math_utils.cpp"
     "src/math_utils.h"
+    "src/player.cpp"
     "src/player.h"
 )
 

@@ -11,7 +11,7 @@ class Animation
 public:
     void load(const char* path_pattern);
     void update(float delta_time);
-    void draw(Vector2 center) const;
+    void draw(Vector2 center, Color tint = WHITE, float scale = 1.0f) const;
     void unload();
 
 private:
@@ -19,4 +19,3 @@ private:
     int _current_frame = 0;
     float _timer = 0.0f;
 };
-

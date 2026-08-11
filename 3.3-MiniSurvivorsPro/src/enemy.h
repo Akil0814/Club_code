@@ -21,8 +21,9 @@ public:
     void load();
     void unload();
     void update(Vector2 player_position, float delta_time);
-    void take_damage(int damage);
+    bool take_damage(int damage);
     Vector2 position() const;
+    float radius() const;
     EnemyType type() const;
     int health() const;
     int max_health() const;
@@ -37,10 +38,10 @@ private:
     EnemyType _type;
     EnemyStats _stats;
     int _health;
+    float _hit_cooldown_timer = 0.0f;
     bool _facing_left = false;
     std::unique_ptr<EnemyAI> _ai;
     Texture2D _shadow{};
     Animation _left_animation;
     Animation _right_animation;
 };
-
