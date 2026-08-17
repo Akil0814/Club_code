@@ -39,9 +39,8 @@ private:
     EnemyStats _stats;
     int _health;
     float _hit_cooldown_timer = 0.0f;
-    bool _facing_left = false;
+    bool _facing_left = true;
     std::unique_ptr<EnemyAI> _ai;
     Texture2D _shadow{};
-    Animation _left_animation;
-    Animation _right_animation;
+    Animation _animation;
 };

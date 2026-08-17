@@ -35,9 +35,9 @@ int main()
     InitAudioDevice();
     SetTargetFPS(60);
 
-    Texture2D background = LoadTexture("res/background.png");
-    Sound hit_sound = LoadSound("res/hit.wav");
-    Music bgm = LoadMusicStream("res/bgm.mp3");
+    Texture2D background = LoadTexture("res/world/background.png");
+    Sound hit_sound = LoadSound("res/audio/sfx_hit.wav");
+    Music bgm = LoadMusicStream("res/audio/music_gameplay.mp3");
     PlayMusicStream(bgm);
 
     Player player;
@@ -152,4 +152,3 @@ int main()
     CloseWindow();
     return 0;
 }
-

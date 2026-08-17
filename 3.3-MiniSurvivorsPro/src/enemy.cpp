@@ -16,15 +16,13 @@ Enemy& Enemy::operator=(Enemy&& other) noexcept = default;
 
 void Enemy::load()
 {
-    _left_animation.load("res/enemy_left_%d.png");
-    _right_animation.load("res/enemy_right_%d.png");
-    _shadow = LoadTexture("res/shadow_enemy.png");
+    _animation.load("res/enemies/boar/move_%02d.png", 6);
+    _shadow = LoadTexture("res/enemies/shadow.png");
 }
 
 void Enemy::unload()
 {
-    _left_animation.unload();
-    _right_animation.unload();
+    _animation.unload();
     UnloadTexture(_shadow);
 }
 
@@ -36,8 +34,7 @@ void Enemy::update(Vector2 player_position, float delta_time)
     _position.y += direction.y * _stats.speed * delta_time;
     if (direction.x < 0.0f) _facing_left = true;
     if (direction.x > 0.0f) _facing_left = false;
-    _left_animation.update(delta_time);
-    _right_animation.update(delta_time);
+    _animation.update(delta_time);
 }
 
 bool Enemy::take_damage(int damage)
@@ -102,8 +99,7 @@ void Enemy::draw() const
     const Vector2 origin{destination.width / 2.0f, 0.0f};
     DrawTexturePro(_shadow, source, destination, origin, 0.0f, _stats.tint);
 
-    if (_facing_left) _left_animation.draw(_position, _stats.tint, scale);
-    else _right_animation.draw(_position, _stats.tint, scale);
+    _animation.draw(_position, _stats.tint, scale, !_facing_left);
     draw_health_bar();
 }
 
@@ -121,4 +117,3 @@ void Enemy::draw_health_bar() const
     DrawRectangleRec(Rectangle{bar_x, bar_y, bar_width * health_ratio, bar_height}, GREEN);
     DrawRectangleLinesEx(Rectangle{bar_x, bar_y, bar_width, bar_height}, 1.0f, RAYWHITE);
 }
-

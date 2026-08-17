@@ -6,15 +6,13 @@
 
 void Player::load()
 {
-    _left_animation.load("res/player_left_%d.png");
-    _right_animation.load("res/player_right_%d.png");
-    _shadow = LoadTexture("res/shadow_player.png");
+    _animation.load("res/players/player_01/move_%02d.png", 6);
+    _shadow = LoadTexture("res/players/shadow.png");
 }
 
 void Player::unload()
 {
-    _left_animation.unload();
-    _right_animation.unload();
+    _animation.unload();
     UnloadTexture(_shadow);
 }
 
@@ -34,8 +32,7 @@ void Player::update(float delta_time)
     _position.x = clamp_value(_position.x, 32.0f, window_width - 32.0f);
     _position.y = clamp_value(_position.y, 32.0f, window_height - 32.0f);
     _invulnerability_timer = std::max(0.0f, _invulnerability_timer - delta_time);
-    _left_animation.update(delta_time);
-    _right_animation.update(delta_time);
+    _animation.update(delta_time);
 }
 
 bool Player::take_damage(int damage)
@@ -88,8 +85,7 @@ void Player::draw() const
         static_cast<int>(_position.y + 20.0f),
         tint
     );
-    if (_facing_left) _left_animation.draw(_position, tint);
-    else _right_animation.draw(_position, tint);
+    _animation.draw(_position, tint, 1.0f, !_facing_left);
 }
 
 void Player::draw_health_bar() const
@@ -105,4 +101,3 @@ void Player::draw_health_bar() const
     DrawRectangleLines(bar_x, bar_y, bar_width, bar_height, RAYWHITE);
     DrawText(TextFormat("HP: %d / %d", _health, player_max_health), bar_x + 6, bar_y + 2, 14, RAYWHITE);
 }
-
