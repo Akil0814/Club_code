@@ -19,12 +19,20 @@ void Player::unload()
 void Player::handle_input(float delta_time)
 {
     const Vector2 old_position = _position;
-    if (IsKeyDown(KEY_W)) _position.y -= _speed * delta_time;
-    if (IsKeyDown(KEY_S)) _position.y += _speed * delta_time;
-    if (IsKeyDown(KEY_A)) _position.x -= _speed * delta_time;
-    if (IsKeyDown(KEY_D)) _position.x += _speed * delta_time;
-    if (_position.x < old_position.x) _facing_left = true;
-    if (_position.x > old_position.x) _facing_left = false;
+    
+    if (IsKeyDown(KEY_W)) 
+        _position.y -= _speed * delta_time;
+    if (IsKeyDown(KEY_S)) 
+        _position.y += _speed * delta_time;
+    if (IsKeyDown(KEY_A)) 
+        _position.x -= _speed * delta_time;
+    if (IsKeyDown(KEY_D)) 
+        _position.x += _speed * delta_time;
+
+    if (_position.x < old_position.x) 
+        _facing_left = true;
+    if (_position.x > old_position.x) 
+        _facing_left = false;
 }
 
 void Player::update(float delta_time)

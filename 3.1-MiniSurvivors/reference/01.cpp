@@ -5,8 +5,10 @@ static constexpr int window_height = 720;
 
 float clamp_value(float value, float minimum, float maximum)
 {
-    if (value < minimum) return minimum;
-    if (value > maximum) return maximum;
+    if (value < minimum)
+        return minimum;
+    if (value > maximum)
+        return maximum;
     return value;
 }
 
@@ -15,10 +17,14 @@ class Player
 public:
     void handle_input(float delta_time)
     {
-        if (IsKeyDown(KEY_W)) _position.y -= _speed * delta_time;
-        if (IsKeyDown(KEY_S)) _position.y += _speed * delta_time;
-        if (IsKeyDown(KEY_A)) _position.x -= _speed * delta_time;
-        if (IsKeyDown(KEY_D)) _position.x += _speed * delta_time;
+        if (IsKeyDown(KEY_W))
+            _position.y -= _speed * delta_time;
+        if (IsKeyDown(KEY_S))
+            _position.y += _speed * delta_time;
+        if (IsKeyDown(KEY_A))
+            _position.x -= _speed * delta_time;
+        if (IsKeyDown(KEY_D))
+            _position.x += _speed * delta_time;
     }
 
     void update()
