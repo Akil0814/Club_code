@@ -45,8 +45,14 @@ public:
         _position.y = clamp_value(_position.y, _radius, window_height - _radius);
     }
 
-    Vector2 position() const { return _position; }
-    void draw() const { DrawCircleV(_position, _radius, GREEN); }
+    Vector2 position() const
+    {
+        return _position;
+    }
+    void draw() const
+    {
+        DrawCircleV(_position, _radius, GREEN);
+    }
 
 private:
     Vector2 _position{window_width / 2.0f, window_height / 2.0f};
@@ -57,7 +63,9 @@ private:
 class Enemy
 {
 public:
-    explicit Enemy(Vector2 position) : _position(position) {}
+    explicit Enemy(Vector2 position) : _position(position)
+    {
+    }
 
     void update(Vector2 target, float delta_time)
     {
@@ -66,7 +74,10 @@ public:
         _position.y += direction.y * _speed * delta_time;
     }
 
-    void draw() const { DrawCircleV(_position, _radius, RED); }
+    void draw() const
+    {
+        DrawCircleV(_position, _radius, RED);
+    }
 
 private:
     Vector2 _position;
@@ -80,10 +91,12 @@ Enemy create_enemy()
     if (edge == 0)
         return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), -20.0f}};
     if (edge == 1)
-        return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 20.0f}};
+        return Enemy{
+            Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 20.0f}};
     if (edge == 2)
         return Enemy{Vector2{-20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
-    return Enemy{Vector2{window_width + 20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
+    return Enemy{
+        Vector2{window_width + 20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
 }
 
 int main()
@@ -110,14 +123,14 @@ int main()
             enemies.push_back(create_enemy());
             spawn_timer = 0.0f;
         }
-        for (Enemy &enemy : enemies)
+        for (Enemy& enemy : enemies)
             enemy.update(player.position(), delta_time);
 
         // render
         BeginDrawing();
         ClearBackground(Color{24, 28, 36, 255});
         player.draw();
-        for (const Enemy &enemy : enemies)
+        for (const Enemy& enemy : enemies)
             enemy.draw();
         DrawText("W A S D to move", 20, 20, 20, RAYWHITE);
         DrawText(TextFormat("Enemies: %d", static_cast<int>(enemies.size())), 20, 48, 20, RAYWHITE);

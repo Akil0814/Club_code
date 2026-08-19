@@ -6,4 +6,3 @@ enum class SceneType
     Game,
     GameOver
 };
-

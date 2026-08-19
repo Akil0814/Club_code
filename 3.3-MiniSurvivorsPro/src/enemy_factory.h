@@ -18,4 +18,3 @@ private:
     static EnemyStats stats_for(EnemyType type);
     static std::unique_ptr<EnemyAI> create_ai(EnemyType type);
 };
-

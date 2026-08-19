@@ -33,7 +33,7 @@ Vector2 direction_to(Vector2 from, Vector2 to)
 class Animation
 {
 public:
-    void load(const char *path_pattern)
+    void load(const char* path_pattern)
     {
         for (int frame = 0; frame < animation_frame_count; ++frame)
         {
@@ -54,10 +54,8 @@ public:
     void draw(Vector2 center) const
     {
         const Texture2D texture = _frames[_current_frame];
-        DrawTexture(texture,
-                    static_cast<int>(center.x - texture.width / 2.0f),
-                    static_cast<int>(center.y - texture.height / 2.0f),
-                    WHITE);
+        DrawTexture(texture, static_cast<int>(center.x - texture.width / 2.0f),
+                    static_cast<int>(center.y - texture.height / 2.0f), WHITE);
     }
 
     void unload()
@@ -117,12 +115,19 @@ public:
         _right_animation.update(delta_time);
     }
 
-    Vector2 position() const { return _position; }
-    bool collides_with(Vector2 position, float radius) const { return CheckCollisionCircles(_position, _radius, position, radius); }
+    Vector2 position() const
+    {
+        return _position;
+    }
+    bool collides_with(Vector2 position, float radius) const
+    {
+        return CheckCollisionCircles(_position, _radius, position, radius);
+    }
 
     void draw() const
     {
-        DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f), static_cast<int>(_position.y + 20.0f), WHITE);
+        DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f),
+                    static_cast<int>(_position.y + 20.0f), WHITE);
         if (_facing_left)
             _left_animation.draw(_position);
         else
@@ -166,12 +171,19 @@ public:
         _right_animation.update(delta_time);
     }
 
-    Vector2 position() const { return _position; }
-    bool collides_with(Vector2 position, float radius) const { return CheckCollisionCircles(_position, _radius, position, radius); }
+    Vector2 position() const
+    {
+        return _position;
+    }
+    bool collides_with(Vector2 position, float radius) const
+    {
+        return CheckCollisionCircles(_position, _radius, position, radius);
+    }
 
     void draw() const
     {
-        DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f), static_cast<int>(_position.y + 20.0f), WHITE);
+        DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f),
+                    static_cast<int>(_position.y + 20.0f), WHITE);
         if (_facing_left)
             _left_animation.draw(_position);
         else
@@ -191,11 +203,26 @@ private:
 class Bullet
 {
 public:
-    explicit Bullet(float angle) : _angle(angle) {}
-    void update(float delta_time) { _angle += _rotation_speed * delta_time; }
-    Vector2 position(Vector2 player_position) const { return Vector2{player_position.x + std::cos(_angle) * _orbit_radius, player_position.y + std::sin(_angle) * _orbit_radius}; }
-    bool collides_with(Vector2 player_position, const Enemy &enemy) const { return CheckCollisionCircles(position(player_position), _radius, enemy.position(), 24.0f); }
-    void draw(Vector2 player_position) const { DrawCircleV(position(player_position), _radius, YELLOW); }
+    explicit Bullet(float angle) : _angle(angle)
+    {
+    }
+    void update(float delta_time)
+    {
+        _angle += _rotation_speed * delta_time;
+    }
+    Vector2 position(Vector2 player_position) const
+    {
+        return Vector2{player_position.x + std::cos(_angle) * _orbit_radius,
+                       player_position.y + std::sin(_angle) * _orbit_radius};
+    }
+    bool collides_with(Vector2 player_position, const Enemy& enemy) const
+    {
+        return CheckCollisionCircles(position(player_position), _radius, enemy.position(), 24.0f);
+    }
+    void draw(Vector2 player_position) const
+    {
+        DrawCircleV(position(player_position), _radius, YELLOW);
+    }
 
 private:
     float _angle;
@@ -210,17 +237,21 @@ Enemy create_enemy()
     if (edge == 0)
         return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), -32.0f}};
     if (edge == 1)
-        return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 32.0f}};
+        return Enemy{
+            Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 32.0f}};
     if (edge == 2)
         return Enemy{Vector2{-32.0f, static_cast<float>(GetRandomValue(0, window_height))}};
 
-    return Enemy{Vector2{window_width + 32.0f, static_cast<float>(GetRandomValue(0, window_height))}};
+    return Enemy{
+        Vector2{window_width + 32.0f, static_cast<float>(GetRandomValue(0, window_height))}};
 }
 
 void draw_background(Texture2D background)
 {
-    const Rectangle source{0.0f, 0.0f, static_cast<float>(background.width), static_cast<float>(background.height)};
-    const Rectangle destination{0.0f, 0.0f, static_cast<float>(window_width), static_cast<float>(window_height)};
+    const Rectangle source{0.0f, 0.0f, static_cast<float>(background.width),
+                           static_cast<float>(background.height)};
+    const Rectangle destination{0.0f, 0.0f, static_cast<float>(window_width),
+                                static_cast<float>(window_height)};
     DrawTexturePro(background, source, destination, Vector2{0.0f, 0.0f}, 0.0f, WHITE);
 }
 
@@ -257,7 +288,7 @@ int main()
             player.unload();
             player = Player{};
             player.load();
-            for (Enemy &enemy : enemies)
+            for (Enemy& enemy : enemies)
                 enemy.unload();
             enemies.clear();
             score = 0;
@@ -274,9 +305,9 @@ int main()
                 enemies.push_back(create_enemy());
                 spawn_timer = 0.0f;
             }
-            for (Bullet &bullet : bullets)
+            for (Bullet& bullet : bullets)
                 bullet.update(delta_time);
-            for (Enemy &enemy : enemies)
+            for (Enemy& enemy : enemies)
             {
                 enemy.update(player.position(), delta_time);
                 if (player.collides_with(enemy.position(), 24.0f))
@@ -285,7 +316,7 @@ int main()
             for (size_t enemy_index = 0; enemy_index < enemies.size();)
             {
                 bool hit = false;
-                for (const Bullet &bullet : bullets)
+                for (const Bullet& bullet : bullets)
                 {
                     if (bullet.collides_with(player.position(), enemies[enemy_index]))
                     {
@@ -309,9 +340,9 @@ int main()
         BeginDrawing();
         draw_background(background);
         player.draw();
-        for (const Enemy &enemy : enemies)
+        for (const Enemy& enemy : enemies)
             enemy.draw();
-        for (const Bullet &bullet : bullets)
+        for (const Bullet& bullet : bullets)
             bullet.draw(player.position());
         DrawText(TextFormat("Score: %d", score), 20, 20, 20, RAYWHITE);
         if (game_over)
@@ -324,7 +355,7 @@ int main()
     }
 
     player.unload();
-    for (Enemy &enemy : enemies)
+    for (Enemy& enemy : enemies)
         enemy.unload();
     UnloadTexture(background);
     UnloadSound(hit_sound);

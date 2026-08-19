@@ -19,12 +19,18 @@ void Player::unload()
 void Player::handle_input(float delta_time)
 {
     const Vector2 old_position = _position;
-    if (IsKeyDown(KEY_W)) _position.y -= _speed * delta_time;
-    if (IsKeyDown(KEY_S)) _position.y += _speed * delta_time;
-    if (IsKeyDown(KEY_A)) _position.x -= _speed * delta_time;
-    if (IsKeyDown(KEY_D)) _position.x += _speed * delta_time;
-    if (_position.x < old_position.x) _facing_left = true;
-    if (_position.x > old_position.x) _facing_left = false;
+    if (IsKeyDown(KEY_W))
+        _position.y -= _speed * delta_time;
+    if (IsKeyDown(KEY_S))
+        _position.y += _speed * delta_time;
+    if (IsKeyDown(KEY_A))
+        _position.x -= _speed * delta_time;
+    if (IsKeyDown(KEY_D))
+        _position.x += _speed * delta_time;
+    if (_position.x < old_position.x)
+        _facing_left = true;
+    if (_position.x > old_position.x)
+        _facing_left = false;
 }
 
 void Player::update(float delta_time)
@@ -37,7 +43,8 @@ void Player::update(float delta_time)
 
 bool Player::take_damage(int damage)
 {
-    if (damage <= 0 || is_dead() || is_invulnerable()) return false;
+    if (damage <= 0 || is_dead() || is_invulnerable())
+        return false;
 
     _health = std::max(0, _health - damage);
     _invulnerability_timer = player_invulnerability_duration;
@@ -76,15 +83,12 @@ bool Player::collides_with(Vector2 position, float radius) const
 
 void Player::draw() const
 {
-    const bool faded = is_invulnerable() && static_cast<int>(_invulnerability_timer * 10.0f) % 2 == 0;
+    const bool faded =
+        is_invulnerable() && static_cast<int>(_invulnerability_timer * 10.0f) % 2 == 0;
     const Color tint = faded ? Fade(WHITE, 0.35f) : WHITE;
 
-    DrawTexture(
-        _shadow,
-        static_cast<int>(_position.x - _shadow.width / 2.0f),
-        static_cast<int>(_position.y + 20.0f),
-        tint
-    );
+    DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f),
+                static_cast<int>(_position.y + 20.0f), tint);
     _animation.draw(_position, tint, 1.0f, !_facing_left);
 }
 
@@ -99,5 +103,6 @@ void Player::draw_health_bar() const
     DrawRectangle(bar_x, bar_y, bar_width, bar_height, DARKGRAY);
     DrawRectangle(bar_x, bar_y, static_cast<int>(bar_width * health_ratio), bar_height, GREEN);
     DrawRectangleLines(bar_x, bar_y, bar_width, bar_height, RAYWHITE);
-    DrawText(TextFormat("HP: %d / %d", _health, player_max_health), bar_x + 6, bar_y + 2, 14, RAYWHITE);
+    DrawText(TextFormat("HP: %d / %d", _health, player_max_health), bar_x + 6, bar_y + 2, 14,
+             RAYWHITE);
 }

@@ -12,13 +12,8 @@
 class Enemy
 {
 public:
-    Enemy(
-        Vector2 position,
-        EnemyType type,
-        EnemyStats stats,
-        std::unique_ptr<EnemyAI> ai,
-        std::unique_ptr<EnemyAttackStrategy> attack_strategy
-    );
+    Enemy(Vector2 position, EnemyType type, EnemyStats stats, std::unique_ptr<EnemyAI> ai,
+          std::unique_ptr<EnemyAttackStrategy> attack_strategy);
     ~Enemy();
     Enemy(Enemy&& other) noexcept;
     Enemy& operator=(Enemy&& other) noexcept;

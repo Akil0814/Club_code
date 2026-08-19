@@ -28,11 +28,11 @@ int Bullet::damage() const
 
 bool Bullet::collides_with(Vector2 player_position, const Enemy& enemy) const
 {
-    return CheckCollisionCircles(position(player_position), _radius, enemy.position(), enemy.radius());
+    return CheckCollisionCircles(position(player_position), _radius, enemy.position(),
+                                 enemy.radius());
 }
 
 void Bullet::draw(Vector2 player_position) const
 {
     DrawCircleV(position(player_position), _radius, YELLOW);
 }
-

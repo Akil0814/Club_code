@@ -32,14 +32,17 @@ void Enemy::update(Vector2 player_position, float delta_time)
     const Vector2 direction = _ai->movement_direction(_position, player_position);
     _position.x += direction.x * _stats.speed * delta_time;
     _position.y += direction.y * _stats.speed * delta_time;
-    if (direction.x < 0.0f) _facing_left = true;
-    if (direction.x > 0.0f) _facing_left = false;
+    if (direction.x < 0.0f)
+        _facing_left = true;
+    if (direction.x > 0.0f)
+        _facing_left = false;
     _animation.update(delta_time);
 }
 
 bool Enemy::take_damage(int damage)
 {
-    if (damage <= 0 || is_dead() || _hit_cooldown_timer > 0.0f) return false;
+    if (damage <= 0 || is_dead() || _hit_cooldown_timer > 0.0f)
+        return false;
 
     _health = std::max(0, _health - damage);
     _hit_cooldown_timer = enemy_hit_cooldown;
@@ -89,7 +92,8 @@ bool Enemy::collides_with(Vector2 position, float radius) const
 void Enemy::draw() const
 {
     const float scale = _stats.radius / 24.0f;
-    const Rectangle source{0.0f, 0.0f, static_cast<float>(_shadow.width), static_cast<float>(_shadow.height)};
+    const Rectangle source{0.0f, 0.0f, static_cast<float>(_shadow.width),
+                           static_cast<float>(_shadow.height)};
     const Rectangle destination{
         _position.x,
         _position.y + 20.0f,
@@ -105,7 +109,8 @@ void Enemy::draw() const
 
 void Enemy::draw_health_bar() const
 {
-    if (_stats.max_health <= 1) return;
+    if (_stats.max_health <= 1)
+        return;
 
     const float bar_width = _stats.radius * 2.0f;
     constexpr float bar_height = 6.0f;

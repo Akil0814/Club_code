@@ -23,4 +23,3 @@ private:
     SceneType _current_type = SceneType::MainMenu;
     bool _should_exit = false;
 };
-

@@ -43,13 +43,8 @@ int Application::run(int argc, char** argv)
         BeginDrawing();
         ClearBackground(Color{24, 28, 36, 255});
 
-        DrawRectangle(
-            (kWindowWidth - 320) / 2,
-            (kWindowHeight - 180) / 2,
-            320,
-            180,
-            Color{99, 179, 237, 255}
-        );
+        DrawRectangle((kWindowWidth - 320) / 2, (kWindowHeight - 180) / 2, 320, 180,
+                      Color{99, 179, 237, 255});
         DrawText("Raylib Template", 500, 475, 30, RAYWHITE);
 
         EndDrawing();

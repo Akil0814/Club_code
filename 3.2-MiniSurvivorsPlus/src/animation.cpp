@@ -21,13 +21,12 @@ void Animation::update(float delta_time)
 void Animation::draw(Vector2 center) const
 {
     const Texture2D texture = _frames[_current_frame];
-    DrawTexture(texture,
-        static_cast<int>(center.x - texture.width / 2.0f),
-        static_cast<int>(center.y - texture.height / 2.0f),
-        WHITE);
+    DrawTexture(texture, static_cast<int>(center.x - texture.width / 2.0f),
+                static_cast<int>(center.y - texture.height / 2.0f), WHITE);
 }
 
 void Animation::unload()
 {
-    for (Texture2D frame : _frames) UnloadTexture(frame);
+    for (Texture2D frame : _frames)
+        UnloadTexture(frame);
 }

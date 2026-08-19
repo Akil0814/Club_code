@@ -10,8 +10,10 @@
 
 void draw_background(Texture2D background)
 {
-    const Rectangle source{0.0f, 0.0f, static_cast<float>(background.width), static_cast<float>(background.height)};
-    const Rectangle destination{0.0f, 0.0f, static_cast<float>(window_width), static_cast<float>(window_height)};
+    const Rectangle source{0.0f, 0.0f, static_cast<float>(background.width),
+                           static_cast<float>(background.height)};
+    const Rectangle destination{0.0f, 0.0f, static_cast<float>(window_width),
+                                static_cast<float>(window_height)};
     DrawTexturePro(background, source, destination, Vector2{0.0f, 0.0f}, 0.0f, WHITE);
 }
 
@@ -41,13 +43,15 @@ int main()
         UpdateMusicStream(bgm);
 
         // input
-        if (!game_over) player.handle_input(delta_time);
+        if (!game_over)
+            player.handle_input(delta_time);
         if (game_over && IsKeyPressed(KEY_R))
         {
             player.unload();
             player = Player{};
             player.load();
-            for (Enemy& enemy : enemies) enemy.unload();
+            for (Enemy& enemy : enemies)
+                enemy.unload();
             enemies.clear();
             score = 0;
             game_over = false;
@@ -63,18 +67,24 @@ int main()
                 enemies.push_back(EnemyFactory::create_random());
                 spawn_timer = 0.0f;
             }
-            for (Bullet& bullet : bullets) bullet.update(delta_time);
+            for (Bullet& bullet : bullets)
+                bullet.update(delta_time);
             for (Enemy& enemy : enemies)
             {
                 enemy.update(player.position(), delta_time);
-                if (player.collides_with(enemy.position(), 24.0f)) game_over = true;
+                if (player.collides_with(enemy.position(), 24.0f))
+                    game_over = true;
             }
             for (size_t enemy_index = 0; enemy_index < enemies.size();)
             {
                 bool hit = false;
                 for (const Bullet& bullet : bullets)
                 {
-                    if (bullet.collides_with(player.position(), enemies[enemy_index])) { hit = true; break; }
+                    if (bullet.collides_with(player.position(), enemies[enemy_index]))
+                    {
+                        hit = true;
+                        break;
+                    }
                 }
                 if (hit)
                 {
@@ -83,7 +93,8 @@ int main()
                     enemies.erase(enemies.begin() + enemy_index);
                     ++score;
                 }
-                else ++enemy_index;
+                else
+                    ++enemy_index;
             }
         }
 
@@ -91,8 +102,10 @@ int main()
         BeginDrawing();
         draw_background(background);
         player.draw();
-        for (const Enemy& enemy : enemies) enemy.draw();
-        for (const Bullet& bullet : bullets) bullet.draw(player.position());
+        for (const Enemy& enemy : enemies)
+            enemy.draw();
+        for (const Bullet& bullet : bullets)
+            bullet.draw(player.position());
         DrawText(TextFormat("Score: %d", score), 20, 20, 20, RAYWHITE);
         if (game_over)
         {
@@ -104,7 +117,8 @@ int main()
     }
 
     player.unload();
-    for (Enemy& enemy : enemies) enemy.unload();
+    for (Enemy& enemy : enemies)
+        enemy.unload();
     UnloadTexture(background);
     UnloadSound(hit_sound);
     StopMusicStream(bgm);

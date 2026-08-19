@@ -4,4 +4,3 @@ struct GameSession
 {
     int score = 0;
 };
-

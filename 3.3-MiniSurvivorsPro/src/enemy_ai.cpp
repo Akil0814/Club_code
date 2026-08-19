@@ -19,8 +19,9 @@ Vector2 KeepDistanceAI::movement_direction(Vector2 enemy_position, Vector2 playe
     const float distance = distance_between(enemy_position, player_position);
     const Vector2 direction = direction_to(enemy_position, player_position);
 
-    if (distance > _preferred_distance + distance_tolerance) return direction;
-    if (distance < _preferred_distance - distance_tolerance) return Vector2{-direction.x, -direction.y};
+    if (distance > _preferred_distance + distance_tolerance)
+        return direction;
+    if (distance < _preferred_distance - distance_tolerance)
+        return Vector2{-direction.x, -direction.y};
     return Vector2{0.0f, 0.0f};
 }
-

@@ -21,4 +21,3 @@ private:
     float _orbit_radius = 90.0f;
     float _rotation_speed = 2.5f;
 };
-

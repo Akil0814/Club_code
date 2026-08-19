@@ -43,9 +43,18 @@ public:
         _position.x = clamp_value(_position.x, 20.0f, window_width - 20.0f);
         _position.y = clamp_value(_position.y, 20.0f, window_height - 20.0f);
     }
-    Vector2 position() const { return _position; }
-    bool collides_with(Vector2 position, float radius) const { return CheckCollisionCircles(_position, _radius, position, radius); }
-    void draw() const { DrawCircleV(_position, _radius, GREEN); }
+    Vector2 position() const
+    {
+        return _position;
+    }
+    bool collides_with(Vector2 position, float radius) const
+    {
+        return CheckCollisionCircles(_position, _radius, position, radius);
+    }
+    void draw() const
+    {
+        DrawCircleV(_position, _radius, GREEN);
+    }
 
 private:
     Vector2 _position{window_width / 2.0f, window_height / 2.0f};
@@ -56,16 +65,27 @@ private:
 class Enemy
 {
 public:
-    explicit Enemy(Vector2 position) : _position(position) {}
+    explicit Enemy(Vector2 position) : _position(position)
+    {
+    }
     void update(Vector2 target, float delta_time)
     {
         const Vector2 d = direction_to(_position, target);
         _position.x += d.x * _speed * delta_time;
         _position.y += d.y * _speed * delta_time;
     }
-    bool collides_with(Vector2 position, float radius) const { return CheckCollisionCircles(_position, _radius, position, radius); }
-    Vector2 position() const { return _position; }
-    void draw() const { DrawCircleV(_position, _radius, RED); }
+    bool collides_with(Vector2 position, float radius) const
+    {
+        return CheckCollisionCircles(_position, _radius, position, radius);
+    }
+    Vector2 position() const
+    {
+        return _position;
+    }
+    void draw() const
+    {
+        DrawCircleV(_position, _radius, RED);
+    }
 
 private:
     Vector2 _position;
@@ -76,11 +96,26 @@ private:
 class Bullet
 {
 public:
-    explicit Bullet(float angle) : _angle(angle) {}
-    void update(float delta_time) { _angle += _rotation_speed * delta_time; }
-    Vector2 position(Vector2 player_position) const { return Vector2{player_position.x + std::cos(_angle) * _orbit_radius, player_position.y + std::sin(_angle) * _orbit_radius}; }
-    bool collides_with(Vector2 player_position, const Enemy &enemy) const { return CheckCollisionCircles(position(player_position), _radius, enemy.position(), 16.0f); }
-    void draw(Vector2 player_position) const { DrawCircleV(position(player_position), _radius, YELLOW); }
+    explicit Bullet(float angle) : _angle(angle)
+    {
+    }
+    void update(float delta_time)
+    {
+        _angle += _rotation_speed * delta_time;
+    }
+    Vector2 position(Vector2 player_position) const
+    {
+        return Vector2{player_position.x + std::cos(_angle) * _orbit_radius,
+                       player_position.y + std::sin(_angle) * _orbit_radius};
+    }
+    bool collides_with(Vector2 player_position, const Enemy& enemy) const
+    {
+        return CheckCollisionCircles(position(player_position), _radius, enemy.position(), 16.0f);
+    }
+    void draw(Vector2 player_position) const
+    {
+        DrawCircleV(position(player_position), _radius, YELLOW);
+    }
 
 private:
     float _angle;
@@ -95,13 +130,15 @@ Enemy create_enemy()
     if (edge == 0)
         return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), -20.0f}};
     if (edge == 1)
-        return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 20.0f}};
+        return Enemy{
+            Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 20.0f}};
     if (edge == 2)
         return Enemy{Vector2{-20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
-    return Enemy{Vector2{window_width + 20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
+    return Enemy{
+        Vector2{window_width + 20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
 }
 
-void reset_game(Player &player, std::vector<Enemy> &enemies, int &score, bool &game_over)
+void reset_game(Player& player, std::vector<Enemy>& enemies, int& score, bool& game_over)
 {
     player = Player{};
     enemies.clear();
@@ -138,9 +175,9 @@ int main()
                 enemies.push_back(create_enemy());
                 spawn_timer = 0.0f;
             }
-            for (Bullet &bullet : bullets)
+            for (Bullet& bullet : bullets)
                 bullet.update(delta_time);
-            for (Enemy &enemy : enemies)
+            for (Enemy& enemy : enemies)
             {
                 enemy.update(player.position(), delta_time);
                 if (player.collides_with(enemy.position(), 16.0f))
@@ -149,7 +186,7 @@ int main()
             for (size_t enemy_index = 0; enemy_index < enemies.size();)
             {
                 bool hit = false;
-                for (const Bullet &bullet : bullets)
+                for (const Bullet& bullet : bullets)
                     if (bullet.collides_with(player.position(), enemies[enemy_index]))
                     {
                         hit = true;
@@ -168,9 +205,9 @@ int main()
         BeginDrawing();
         ClearBackground(Color{24, 28, 36, 255});
         player.draw();
-        for (const Bullet &bullet : bullets)
+        for (const Bullet& bullet : bullets)
             bullet.draw(player.position());
-        for (const Enemy &enemy : enemies)
+        for (const Enemy& enemy : enemies)
             enemy.draw();
         DrawText(TextFormat("Score: %d", score), 20, 20, 20, RAYWHITE);
         if (game_over)
