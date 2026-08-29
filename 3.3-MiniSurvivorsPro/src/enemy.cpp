@@ -32,10 +32,15 @@ void Enemy::update(Vector2 player_position, float delta_time)
 {
     _hit_cooldown_timer = std::max(0.0f, _hit_cooldown_timer - delta_time);
     const Vector2 direction = _ai->movement_direction(_position, player_position);
+    
     _position.x += direction.x * _stats.speed * delta_time;
     _position.y += direction.y * _stats.speed * delta_time;
-    if (direction.x < 0.0f) _facing_left = true;
-    if (direction.x > 0.0f) _facing_left = false;
+
+    if (direction.x < 0.0f)
+    _facing_left = true;
+    if (direction.x > 0.0f)
+    _facing_left = false;
+
     _left_animation.update(delta_time);
     _right_animation.update(delta_time);
 }
