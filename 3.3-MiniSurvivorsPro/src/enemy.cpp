@@ -16,15 +16,13 @@ Enemy& Enemy::operator=(Enemy&& other) noexcept = default;
 
 void Enemy::load()
 {
-    _left_animation.load("res/enemy_left_%d.png");
-    _right_animation.load("res/enemy_right_%d.png");
-    _shadow = LoadTexture("res/shadow_enemy.png");
+    _animation.load("res/enemies/boar/move_%02d.png", 6);
+    _shadow = LoadTexture("res/enemies/shadow.png");
 }
 
 void Enemy::unload()
 {
-    _left_animation.unload();
-    _right_animation.unload();
+    _animation.unload();
     UnloadTexture(_shadow);
 }
 
@@ -32,22 +30,20 @@ void Enemy::update(Vector2 player_position, float delta_time)
 {
     _hit_cooldown_timer = std::max(0.0f, _hit_cooldown_timer - delta_time);
     const Vector2 direction = _ai->movement_direction(_position, player_position);
-    
+
     _position.x += direction.x * _stats.speed * delta_time;
     _position.y += direction.y * _stats.speed * delta_time;
-
     if (direction.x < 0.0f)
-    _facing_left = true;
+        _facing_left = true;
     if (direction.x > 0.0f)
-    _facing_left = false;
-
-    _left_animation.update(delta_time);
-    _right_animation.update(delta_time);
+        _facing_left = false;
+    _animation.update(delta_time);
 }
 
 bool Enemy::take_damage(int damage)
 {
-    if (damage <= 0 || is_dead() || _hit_cooldown_timer > 0.0f) return false;
+    if (damage <= 0 || is_dead() || _hit_cooldown_timer > 0.0f)
+        return false;
 
     _health = std::max(0, _health - damage);
     _hit_cooldown_timer = enemy_hit_cooldown;
@@ -97,7 +93,8 @@ bool Enemy::collides_with(Vector2 position, float radius) const
 void Enemy::draw() const
 {
     const float scale = _stats.radius / 24.0f;
-    const Rectangle source{0.0f, 0.0f, static_cast<float>(_shadow.width), static_cast<float>(_shadow.height)};
+    const Rectangle source{0.0f, 0.0f, static_cast<float>(_shadow.width),
+                           static_cast<float>(_shadow.height)};
     const Rectangle destination{
         _position.x,
         _position.y + 20.0f,
@@ -107,14 +104,14 @@ void Enemy::draw() const
     const Vector2 origin{destination.width / 2.0f, 0.0f};
     DrawTexturePro(_shadow, source, destination, origin, 0.0f, _stats.tint);
 
-    if (_facing_left) _left_animation.draw(_position, _stats.tint, scale);
-    else _right_animation.draw(_position, _stats.tint, scale);
+    _animation.draw(_position, _stats.tint, scale, !_facing_left);
     draw_health_bar();
 }
 
 void Enemy::draw_health_bar() const
 {
-    if (_stats.max_health <= 1) return;
+    if (_stats.max_health <= 1)
+        return;
 
     const float bar_width = _stats.radius * 2.0f;
     constexpr float bar_height = 6.0f;
@@ -126,4 +123,3 @@ void Enemy::draw_health_bar() const
     DrawRectangleRec(Rectangle{bar_x, bar_y, bar_width * health_ratio, bar_height}, GREEN);
     DrawRectangleLinesEx(Rectangle{bar_x, bar_y, bar_width, bar_height}, 1.0f, RAYWHITE);
 }
-

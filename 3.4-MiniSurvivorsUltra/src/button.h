@@ -19,4 +19,3 @@ private:
     bool _is_hovered = false;
     bool _is_pressed = false;
 };
-

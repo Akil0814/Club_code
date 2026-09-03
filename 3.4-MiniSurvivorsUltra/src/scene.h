@@ -9,4 +9,3 @@ public:
     virtual void update(float delta_time) = 0;
     virtual void draw() const = 0;
 };
-

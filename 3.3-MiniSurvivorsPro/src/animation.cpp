@@ -1,27 +1,38 @@
 #include "animation.h"
 
-void Animation::load(const char* path_pattern)
+void Animation::load(const char* path_pattern, int frame_count)
 {
-    for (int frame = 0; frame < animation_frame_count; ++frame)
+    _frames.reserve(frame_count);
+    for (int frame = 0; frame < frame_count; ++frame)
     {
-        _frames[frame] = LoadTexture(TextFormat(path_pattern, frame));
+        _frames.push_back(LoadTexture(TextFormat(path_pattern, frame)));
     }
+    _current_frame = 0;
+    _timer = 0.0f;
 }
 
 void Animation::update(float delta_time)
 {
+    if (_frames.empty())
+        return;
+
     _timer += delta_time;
     if (_timer >= 0.10f)
     {
         _timer = 0.0f;
-        _current_frame = (_current_frame + 1) % animation_frame_count;
+        _current_frame = (_current_frame + 1) % static_cast<int>(_frames.size());
     }
 }
 
-void Animation::draw(Vector2 center, Color tint, float scale) const
+void Animation::draw(Vector2 center, Color tint, float scale, bool flip_horizontal) const
 {
+    if (_frames.empty())
+        return;
+
     const Texture2D texture = _frames[_current_frame];
-    const Rectangle source{0.0f, 0.0f, static_cast<float>(texture.width), static_cast<float>(texture.height)};
+    const float source_width =
+        flip_horizontal ? -static_cast<float>(texture.width) : static_cast<float>(texture.width);
+    const Rectangle source{0.0f, 0.0f, source_width, static_cast<float>(texture.height)};
     const Rectangle destination{
         center.x,
         center.y,
@@ -38,5 +49,7 @@ void Animation::unload()
     {
         UnloadTexture(frame);
     }
+    _frames.clear();
+    _current_frame = 0;
+    _timer = 0.0f;
 }
-

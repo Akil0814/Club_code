@@ -19,4 +19,3 @@ private:
     int _current_frame = 0;
     float _timer = 0.0f;
 };
-

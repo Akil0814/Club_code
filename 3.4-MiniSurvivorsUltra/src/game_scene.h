@@ -38,4 +38,3 @@ private:
     float _elapsed_time = 0.0f;
     float _spawn_timer = 0.0f;
 };
-

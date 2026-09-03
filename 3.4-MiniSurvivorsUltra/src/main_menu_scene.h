@@ -21,4 +21,3 @@ private:
     Button _start_button;
     Button _exit_button;
 };
-

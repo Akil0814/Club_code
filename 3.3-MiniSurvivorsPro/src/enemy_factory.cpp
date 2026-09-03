@@ -17,9 +17,12 @@ Enemy EnemyFactory::create_random(float elapsed_time)
 Vector2 EnemyFactory::random_spawn_position()
 {
     const int edge = GetRandomValue(0, 3);
-    if (edge == 0) return Vector2{static_cast<float>(GetRandomValue(0, window_width)), -32.0f};
-    if (edge == 1) return Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 32.0f};
-    if (edge == 2) return Vector2{-32.0f, static_cast<float>(GetRandomValue(0, window_height))};
+    if (edge == 0)
+        return Vector2{static_cast<float>(GetRandomValue(0, window_width)), -32.0f};
+    if (edge == 1)
+        return Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 32.0f};
+    if (edge == 2)
+        return Vector2{-32.0f, static_cast<float>(GetRandomValue(0, window_height))};
     return Vector2{window_width + 32.0f, static_cast<float>(GetRandomValue(0, window_height))};
 }
 
@@ -29,23 +32,32 @@ EnemyType EnemyFactory::random_type(float elapsed_time)
 
     if (elapsed_time < 20.0f)
     {
-        if (roll <= 65) return EnemyType::Normal;
-        if (roll <= 85) return EnemyType::Fast;
-        if (roll <= 95) return EnemyType::Tank;
+        if (roll <= 65)
+            return EnemyType::Normal;
+        if (roll <= 85)
+            return EnemyType::Fast;
+        if (roll <= 95)
+            return EnemyType::Tank;
         return EnemyType::Cautious;
     }
 
     if (elapsed_time < 45.0f)
     {
-        if (roll <= 40) return EnemyType::Normal;
-        if (roll <= 65) return EnemyType::Fast;
-        if (roll <= 85) return EnemyType::Tank;
+        if (roll <= 40)
+            return EnemyType::Normal;
+        if (roll <= 65)
+            return EnemyType::Fast;
+        if (roll <= 85)
+            return EnemyType::Tank;
         return EnemyType::Cautious;
     }
 
-    if (roll <= 25) return EnemyType::Normal;
-    if (roll <= 55) return EnemyType::Fast;
-    if (roll <= 80) return EnemyType::Tank;
+    if (roll <= 25)
+        return EnemyType::Normal;
+    if (roll <= 55)
+        return EnemyType::Fast;
+    if (roll <= 80)
+        return EnemyType::Tank;
     return EnemyType::Cautious;
 }
 
@@ -74,4 +86,3 @@ std::unique_ptr<EnemyAI> EnemyFactory::create_ai(EnemyType type)
     }
     return std::make_unique<ChaseAI>();
 }
-

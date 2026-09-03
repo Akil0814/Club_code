@@ -24,4 +24,3 @@ public:
 private:
     float _preferred_distance;
 };
-

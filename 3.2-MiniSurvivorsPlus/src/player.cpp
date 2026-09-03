@@ -19,12 +19,20 @@ void Player::unload()
 void Player::handle_input(float delta_time)
 {
     const Vector2 old_position = _position;
-    if (IsKeyDown(KEY_W)) _position.y -= _speed * delta_time;
-    if (IsKeyDown(KEY_S)) _position.y += _speed * delta_time;
-    if (IsKeyDown(KEY_A)) _position.x -= _speed * delta_time;
-    if (IsKeyDown(KEY_D)) _position.x += _speed * delta_time;
-    if (_position.x < old_position.x) _facing_left = true;
-    if (_position.x > old_position.x) _facing_left = false;
+
+    if (IsKeyDown(KEY_W))
+        _position.y -= _speed * delta_time;
+    if (IsKeyDown(KEY_S))
+        _position.y += _speed * delta_time;
+    if (IsKeyDown(KEY_A))
+        _position.x -= _speed * delta_time;
+    if (IsKeyDown(KEY_D))
+        _position.x += _speed * delta_time;
+
+    if (_position.x < old_position.x)
+        _facing_left = true;
+    if (_position.x > old_position.x)
+        _facing_left = false;
 }
 
 void Player::update(float delta_time)
@@ -47,7 +55,10 @@ bool Player::collides_with(Vector2 position, float radius) const
 
 void Player::draw() const
 {
-    DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f), static_cast<int>(_position.y + 20.0f), WHITE);
-    if (_facing_left) _left_animation.draw(_position);
-    else _right_animation.draw(_position);
+    DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f),
+                static_cast<int>(_position.y + 20.0f), WHITE);
+    if (_facing_left)
+        _left_animation.draw(_position);
+    else
+        _right_animation.draw(_position);
 }

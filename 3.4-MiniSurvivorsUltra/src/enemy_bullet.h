@@ -24,4 +24,3 @@ private:
     float _radius;
     int _damage;
 };
-

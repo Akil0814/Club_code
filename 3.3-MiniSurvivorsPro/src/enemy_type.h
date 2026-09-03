@@ -18,4 +18,3 @@ struct EnemyStats
     int score_value;
     Color tint;
 };
-

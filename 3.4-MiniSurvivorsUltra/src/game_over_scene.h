@@ -21,4 +21,3 @@ private:
     Button _retry_button;
     Button _menu_button;
 };
-

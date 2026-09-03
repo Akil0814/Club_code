@@ -38,7 +38,10 @@ bool Enemy::collides_with(Vector2 position, float radius) const
 
 void Enemy::draw() const
 {
-    DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f), static_cast<int>(_position.y + 20.0f), WHITE);
-    if (_facing_left) _left_animation.draw(_position);
-    else _right_animation.draw(_position);
+    DrawTexture(_shadow, static_cast<int>(_position.x - _shadow.width / 2.0f),
+                static_cast<int>(_position.y + 20.0f), WHITE);
+    if (_facing_left)
+        _left_animation.draw(_position);
+    else
+        _right_animation.draw(_position);
 }

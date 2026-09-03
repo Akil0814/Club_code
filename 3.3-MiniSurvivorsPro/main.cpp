@@ -10,8 +10,10 @@
 
 void draw_background(Texture2D background)
 {
-    const Rectangle source{0.0f, 0.0f, static_cast<float>(background.width), static_cast<float>(background.height)};
-    const Rectangle destination{0.0f, 0.0f, static_cast<float>(window_width), static_cast<float>(window_height)};
+    const Rectangle source{0.0f, 0.0f, static_cast<float>(background.width),
+                           static_cast<float>(background.height)};
+    const Rectangle destination{0.0f, 0.0f, static_cast<float>(window_width),
+                                static_cast<float>(window_height)};
     DrawTexturePro(background, source, destination, Vector2{0.0f, 0.0f}, 0.0f, WHITE);
 }
 
@@ -35,9 +37,9 @@ int main()
     InitAudioDevice();
     SetTargetFPS(60);
 
-    Texture2D background = LoadTexture("res/background.png");
-    Sound hit_sound = LoadSound("res/hit.wav");
-    Music bgm = LoadMusicStream("res/bgm.mp3");
+    Texture2D background = LoadTexture("res/world/background.png");
+    Sound hit_sound = LoadSound("res/audio/sfx_hit.wav");
+    Music bgm = LoadMusicStream("res/audio/music_gameplay.mp3");
     PlayMusicStream(bgm);
 
     Player player;
@@ -97,7 +99,8 @@ int main()
                 if (player.collides_with(enemy.position(), enemy.radius()) && player.take_damage(1))
                 {
                     PlaySound(hit_sound);
-                    if (player.is_dead()) game_over = true;
+                    if (player.is_dead())
+                        game_over = true;
                 }
             }
 
@@ -106,8 +109,10 @@ int main()
                 Enemy& enemy = enemies[enemy_index];
                 for (const Bullet& bullet : bullets)
                 {
-                    if (!bullet.collides_with(player.position(), enemy)) continue;
-                    if (enemy.take_damage(bullet.damage())) PlaySound(hit_sound);
+                    if (!bullet.collides_with(player.position(), enemy))
+                        continue;
+                    if (enemy.take_damage(bullet.damage()))
+                        PlaySound(hit_sound);
                     break;
                 }
 
@@ -128,8 +133,10 @@ int main()
         BeginDrawing();
         draw_background(background);
         player.draw();
-        for (const Enemy& enemy : enemies) enemy.draw();
-        for (const Bullet& bullet : bullets) bullet.draw(player.position());
+        for (const Enemy& enemy : enemies)
+            enemy.draw();
+        for (const Bullet& bullet : bullets)
+            bullet.draw(player.position());
         DrawText(TextFormat("Score: %d", score), 20, 20, 20, RAYWHITE);
         player.draw_health_bar();
 
@@ -152,4 +159,3 @@ int main()
     CloseWindow();
     return 0;
 }
-

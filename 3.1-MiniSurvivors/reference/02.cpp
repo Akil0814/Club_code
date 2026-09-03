@@ -8,8 +8,10 @@ static constexpr int window_height = 720;
 
 float clamp_value(float value, float minimum, float maximum)
 {
-    if (value < minimum) return minimum;
-    if (value > maximum) return maximum;
+    if (value < minimum)
+        return minimum;
+    if (value > maximum)
+        return maximum;
     return value;
 }
 
@@ -17,7 +19,8 @@ Vector2 direction_to(Vector2 from, Vector2 to)
 {
     Vector2 direction{to.x - from.x, to.y - from.y};
     const float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length == 0.0f) return Vector2{0.0f, 0.0f};
+    if (length == 0.0f)
+        return Vector2{0.0f, 0.0f};
     return Vector2{direction.x / length, direction.y / length};
 }
 
@@ -26,10 +29,14 @@ class Player
 public:
     void handle_input(float delta_time)
     {
-        if (IsKeyDown(KEY_W)) _position.y -= _speed * delta_time;
-        if (IsKeyDown(KEY_S)) _position.y += _speed * delta_time;
-        if (IsKeyDown(KEY_A)) _position.x -= _speed * delta_time;
-        if (IsKeyDown(KEY_D)) _position.x += _speed * delta_time;
+        if (IsKeyDown(KEY_W))
+            _position.y -= _speed * delta_time;
+        if (IsKeyDown(KEY_S))
+            _position.y += _speed * delta_time;
+        if (IsKeyDown(KEY_A))
+            _position.x -= _speed * delta_time;
+        if (IsKeyDown(KEY_D))
+            _position.x += _speed * delta_time;
     }
 
     void update()
@@ -38,8 +45,14 @@ public:
         _position.y = clamp_value(_position.y, _radius, window_height - _radius);
     }
 
-    Vector2 position() const { return _position; }
-    void draw() const { DrawCircleV(_position, _radius, GREEN); }
+    Vector2 position() const
+    {
+        return _position;
+    }
+    void draw() const
+    {
+        DrawCircleV(_position, _radius, GREEN);
+    }
 
 private:
     Vector2 _position{window_width / 2.0f, window_height / 2.0f};
@@ -50,7 +63,9 @@ private:
 class Enemy
 {
 public:
-    explicit Enemy(Vector2 position) : _position(position) {}
+    explicit Enemy(Vector2 position) : _position(position)
+    {
+    }
 
     void update(Vector2 target, float delta_time)
     {
@@ -59,7 +74,10 @@ public:
         _position.y += direction.y * _speed * delta_time;
     }
 
-    void draw() const { DrawCircleV(_position, _radius, RED); }
+    void draw() const
+    {
+        DrawCircleV(_position, _radius, RED);
+    }
 
 private:
     Vector2 _position;
@@ -70,10 +88,15 @@ private:
 Enemy create_enemy()
 {
     const int edge = GetRandomValue(0, 3);
-    if (edge == 0) return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), -20.0f}};
-    if (edge == 1) return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 20.0f}};
-    if (edge == 2) return Enemy{Vector2{-20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
-    return Enemy{Vector2{window_width + 20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
+    if (edge == 0)
+        return Enemy{Vector2{static_cast<float>(GetRandomValue(0, window_width)), -20.0f}};
+    if (edge == 1)
+        return Enemy{
+            Vector2{static_cast<float>(GetRandomValue(0, window_width)), window_height + 20.0f}};
+    if (edge == 2)
+        return Enemy{Vector2{-20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
+    return Enemy{
+        Vector2{window_width + 20.0f, static_cast<float>(GetRandomValue(0, window_height))}};
 }
 
 int main()
@@ -100,13 +123,15 @@ int main()
             enemies.push_back(create_enemy());
             spawn_timer = 0.0f;
         }
-        for (Enemy& enemy : enemies) enemy.update(player.position(), delta_time);
+        for (Enemy& enemy : enemies)
+            enemy.update(player.position(), delta_time);
 
         // render
         BeginDrawing();
         ClearBackground(Color{24, 28, 36, 255});
         player.draw();
-        for (const Enemy& enemy : enemies) enemy.draw();
+        for (const Enemy& enemy : enemies)
+            enemy.draw();
         DrawText("W A S D to move", 20, 20, 20, RAYWHITE);
         DrawText(TextFormat("Enemies: %d", static_cast<int>(enemies.size())), 20, 48, 20, RAYWHITE);
         EndDrawing();

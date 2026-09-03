@@ -11,27 +11,28 @@ static constexpr float ball_speed = 360.0f;
 
 void reset_ball(Vector2& ball_position, Vector2& ball_velocity, float direction)
 {
-    ball_position = Vector2{ window_width / 2.0f, window_height / 2.0f };
+    ball_position = Vector2{window_width / 2.0f, window_height / 2.0f};
 
-    ball_velocity = Vector2{ ball_speed * direction, ball_speed * 0.35f };
+    ball_velocity = Vector2{ball_speed * direction, ball_speed * 0.35f};
 }
 
 void move_paddles(Rectangle& left_paddle, Rectangle& right_paddle, float delta_time)
 {
     if (IsKeyDown(KEY_W))
         left_paddle.y -= paddle_speed * delta_time;
-    if (IsKeyDown(KEY_S)) 
+    if (IsKeyDown(KEY_S))
         left_paddle.y += paddle_speed * delta_time;
 
-    if (IsKeyDown(KEY_UP)) 
+    if (IsKeyDown(KEY_UP))
         right_paddle.y -= paddle_speed * delta_time;
-    if (IsKeyDown(KEY_DOWN)) 
+    if (IsKeyDown(KEY_DOWN))
         right_paddle.y += paddle_speed * delta_time;
 }
 
 void keep_paddle_in_window(Rectangle& paddle)
 {
-    if (paddle.y < 0.0f) paddle.y = 0.0f;
+    if (paddle.y < 0.0f)
+        paddle.y = 0.0f;
 
     if (paddle.y > window_height - paddle.height)
         paddle.y = window_height - paddle.height;
@@ -45,14 +46,14 @@ void move_ball(Vector2& ball_position, const Vector2& ball_velocity, float delta
 
 void bounce_ball_on_walls(const Vector2& ball_position, Vector2& ball_velocity)
 {
-    if (ball_position.y - ball_radius <= 0.0f ||ball_position.y + ball_radius >= window_height)
+    if (ball_position.y - ball_radius <= 0.0f || ball_position.y + ball_radius >= window_height)
     {
         ball_velocity.y *= -1.0f;
     }
 }
 
-void bounce_ball_on_paddles( Vector2& ball_position, Vector2& ball_velocity,
-    const Rectangle& left_paddle, const Rectangle& right_paddle)
+void bounce_ball_on_paddles(Vector2& ball_position, Vector2& ball_velocity,
+                            const Rectangle& left_paddle, const Rectangle& right_paddle)
 {
     if (CheckCollisionCircleRec(ball_position, ball_radius, left_paddle) && ball_velocity.x < 0.0f)
     {
@@ -67,8 +68,7 @@ void bounce_ball_on_paddles( Vector2& ball_position, Vector2& ball_velocity,
     }
 }
 
-void update_score(Vector2& ball_position, Vector2& ball_velocity, 
-    int& left_score, int& right_score)
+void update_score(Vector2& ball_position, Vector2& ball_velocity, int& left_score, int& right_score)
 {
     if (ball_position.x < -ball_radius)
     {
@@ -82,8 +82,8 @@ void update_score(Vector2& ball_position, Vector2& ball_velocity,
     }
 }
 
-void draw_game(const Rectangle& left_paddle,const Rectangle& right_paddle,
-    const Vector2& ball_position,int left_score,int right_score)
+void draw_game(const Rectangle& left_paddle, const Rectangle& right_paddle,
+               const Vector2& ball_position, int left_score, int right_score)
 {
     DrawRectangleRec(left_paddle, RAYWHITE);
     DrawRectangleRec(right_paddle, RAYWHITE);
@@ -98,13 +98,12 @@ int main()
     InitWindow(window_width, window_height, "Simple Pong");
     SetTargetFPS(60);
 
-    Rectangle left_paddle{ 40.0f,
-        window_height / 2.0f - paddle_height / 2.0f,
-        paddle_width,paddle_height };
+    Rectangle left_paddle{40.0f, window_height / 2.0f - paddle_height / 2.0f, paddle_width,
+                          paddle_height};
 
-    Rectangle right_paddle{ window_width - 40.0f - paddle_width,
-        window_height / 2.0f - paddle_height / 2.0f,
-        paddle_width, paddle_height};
+    Rectangle right_paddle{window_width - 40.0f - paddle_width,
+                           window_height / 2.0f - paddle_height / 2.0f, paddle_width,
+                           paddle_height};
 
     Vector2 ball_position{};
     Vector2 ball_velocity{};

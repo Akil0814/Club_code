@@ -28,8 +28,7 @@ private:
     float _radius = 24.0f;
     int _health = player_max_health;
     float _invulnerability_timer = 0.0f;
-    bool _facing_left = false;
+    bool _facing_left = true;
     Texture2D _shadow{};
-    Animation _left_animation;
-    Animation _right_animation;
+    Animation _animation;
 };
