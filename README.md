@@ -16,3 +16,9 @@ A collection of independent C++ and [raylib](https://www.raylib.com/) teaching p
 ## Getting Started
 
 Each folder is an independent CMake project. Start with [Introduction](0-Introduction/) and read its [setup guide](0-Introduction/README.md) for platform-specific build instructions.
+
+## License
+
+source code in this repository is available under the [MIT License](LICENSE).
+Bundled raylib files remain under their own terms; see [Third-Party Notices](THIRD_PARTY_NOTICES.md).
+Game art and audio are not covered by the MIT License; see [Game Asset Attribution](ASSETS.md).
